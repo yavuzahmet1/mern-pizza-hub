@@ -1,0 +1,38 @@
+# 🚫 NODE & DEPENDENCIES
+node_modules/       # PNPM/NPM/Yarn paketleri
+.pnpm-store/        # PNPM global cache (isteğe bağlı)
+
+# 🔒 SECRETS
+.env                # Çevre değişkenleri
+.env*.local         # Lokal env dosyaları
+*.key               # Private key'ler
+*.pem               # Sertifikalar
+
+# 🧹 BUILD & OUTPUT
+dist/               # Derlenmiş dosyalar
+.cache/             # Build cache (Vite/ESBuild vs)
+*.log               # Log dosyaları
+
+# 🖥️ VS CODE SPECIFICS
+.vscode/            # 👈 VS Code klasörü (AYARLARI GİT'E GİTMESİN!)
+!.vscode/extensions.json # 👈 Sadece extensions.json izin ver (isteğe bağlı)
+.vscode/settings.json # Workspace ayarları (kişiye özel)
+.vscode/launch.json   # Debug profilleri (kişiye özel)
+
+# 🗄️ TEMP FILES
+*.tmp               # Geçici dosyalar
+*.swp               # Vim swap dosyaları
+.DS_Store           # macOS metadata
+Thumbs.db           # Windows thumbnail cache
+
+# 🧪 TESTING
+coverage/           # Test coverage raporları
+junit.xml           # Test çıktıları
+/__snapshots__/     # Jest/Testing Library snapshot'ları
+
+# 🚀 DEPLOYMENT
+.vercel/            # Vercel build cache
+.netlify/           # Netlify build cache
+
+
+.vscode/settings.json
