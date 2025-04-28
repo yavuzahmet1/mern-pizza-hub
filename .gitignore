@@ -36,3 +36,5 @@ junit.xml           # Test çıktıları
 
 
 .vscode/settings.json
+
+node_modules/
