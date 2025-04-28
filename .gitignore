@@ -1,40 +1,100 @@
-# 🚫 NODE & DEPENDENCIES
-node_modules/       # PNPM/NPM/Yarn paketleri
-.pnpm-store/        # PNPM global cache (isteğe bağlı)
-
-# 🔒 SECRETS
-.env                # Çevre değişkenleri
-.env*.local         # Lokal env dosyaları
-*.key               # Private key'ler
-*.pem               # Sertifikalar
-
-# 🧹 BUILD & OUTPUT
-dist/               # Derlenmiş dosyalar
-.cache/             # Build cache (Vite/ESBuild vs)
-*.log               # Log dosyaları
-
-# 🖥️ VS CODE SPECIFICS
-.vscode/            # 👈 VS Code klasörü (AYARLARI GİT'E GİTMESİN!)
-!.vscode/extensions.json # 👈 Sadece extensions.json izin ver (isteğe bağlı)
-.vscode/settings.json # Workspace ayarları (kişiye özel)
-.vscode/launch.json   # Debug profilleri (kişiye özel)
-
-# 🗄️ TEMP FILES
-*.tmp               # Geçici dosyalar
-*.swp               # Vim swap dosyaları
-.DS_Store           # macOS metadata
-Thumbs.db           # Windows thumbnail cache
-
-# 🧪 TESTING
-coverage/           # Test coverage raporları
-junit.xml           # Test çıktıları
-/__snapshots__/     # Jest/Testing Library snapshot'ları
-
-# 🚀 DEPLOYMENT
-.vercel/            # Vercel build cache
-.netlify/           # Netlify build cache
-
-
-.vscode/settings.json
-
+# 🚀 Node.js & JavaScript
 node_modules/
+jspm_packages/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*  # pnpm logları için eklendi
+
+# 📦 Paket Yöneticileri
+.npm/
+.yarn/
+.yarn-integrity
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnpm-store/      # pnpm özel eklendi
+*.tgz
+
+# 🔍 Test & Coverage
+coverage/
+.nyc_output/
+*.lcov
+.jest-cache/
+
+# 🛠️ Build Araçları
+dist/
+build/
+.next/
+.nuxt/
+.vuepress/dist/
+.serverless/
+.fusebox/
+.rpt2_cache/
+.rts2_cache_*/
+.eslintcache
+*.tsbuildinfo
+
+# 💻 IDE & Sistem
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+.tern-port
+
+# 🌐 Environment
+.env
+.env.*
+!.env.example
+.env.local
+.env.development
+.env.production
+
+# 📊 Raporlar
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+profiles/
+*.pid
+*.seed
+*.pid.lock
+
+# 🧪 Debug
+.debug/
+lib-cov/
+.grunt/
+.lock-wscript
+
+# 📚 Typings
+typings/
+*.d.ts
+
+# 🚀 Modern Araçlar
+.cache/
+.parcel-cache/
+.turbo/
+.open-next/      # Next.js için yeni eklendi
+
+# 🧩 Framework Özel
+.next/cache/    # Next.js cache
+.nuxt/          # Nuxt.js
+.quasar/        # Quasar
+.svelte-kit/    # SvelteKit
+
+# ☁️ Cloud & Hosting
+.netlify/
+.vercel/
+.cdk.out/       # AWS CDK
+.sst/           # SST
+
+# 🗄️ Veritabanı
+.dynamodb/
+*.sqlite
+*.sqlite3
+
+# 🐳 Docker & Container
+docker-compose.override.yml
+**/.dockerignore
+**/docker-compose*.yml
