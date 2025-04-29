@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import dbConnection from "./src/config/dbConnection.js";
+import queryHandler from "./src/middleware/queryHandler.js";
 
 dotenv.config();
 const app = express();
@@ -14,6 +15,7 @@ await dbConnection(); // 👈 Modern top-level await
 // Logger:
 
 // Query Handler:
+app.use(queryHandler);
 
 // Routes:
 
