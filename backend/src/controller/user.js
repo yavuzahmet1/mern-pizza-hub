@@ -11,7 +11,6 @@ const userController = {
   },
   create: async (req, res) => {
     try {
-      // Çakışma kontrolü
       const existingUser = await User.findOne({
         $or: [{ email: req.body.email }, { username: req.body.username }],
       });
@@ -39,21 +38,50 @@ const userController = {
     }
   },
   read: async (req, res) => {
+    const result = await User.findOne({ _id: req.params.id });
+
     res.status(200).send({
       error: false,
       result,
     });
   },
   update: async (req, res) => {
-    res.status(200).send({
-      error: false,
-      result,
-    });
+    const result = await User.findByIdAndUpdate(
+      { _id: req.params.id },
+      req.body,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+    res
+      .status(200)
+      .send({
+        error: false,
+        result,
+      })
+      .select("-password");
   },
   delete: async (req, res) => {
-    res.status(200).send({
-      error: false,
-      result,
-    });
+    try {
+      const result = await User.deleteOne({ _id: req.params.id });
+
+      if (!result.deletedCount) {
+        return res.status(404).send({
+          error: true,
+          message: "User not found or already deleted",
+        });
+      }
+      return res.status(204).send();
+    } catch (err) {
+      console.error("Delete user error:", err);
+
+      res.status(500).send({
+        error: true,
+        message: "Server error during user deletion",
+        systemMessage:
+          process.env.NODE_ENV === "development" ? err.message : undefined,
+      });
+    }
   },
 };
