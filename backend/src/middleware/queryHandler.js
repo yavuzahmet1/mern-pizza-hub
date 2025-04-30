@@ -1,15 +1,25 @@
 export default (req, res, next) => {
+  // Yardımcı fonksiyon: Güvenli JSON parse
+  const parseJSON = (value) => {
+    try {
+      return typeof value === "string" ? JSON.parse(value) : value || {};
+    } catch {
+      return {};
+    }
+  };
+
   // ### Filtering ###
-  const filter = req.query?.filter || {};
+  const filter = parseJSON(req.query?.filter);
 
   // ### Searching ###
-  const search = req.query?.search || {};
-  for (const key in search) {
-    search[key] = { $regex: search[key], $options: "i" }; // i: case insensitive
+  const rawSearch = parseJSON(req.query?.search);
+  const search = {};
+  for (const key in rawSearch) {
+    search[key] = { $regex: rawSearch[key], $options: "i" }; // i: case insensitive
   }
 
   // ### Sorting ###
-  const sort = req.query?.sort || {};
+  const sort = parseJSON(req.query?.sort);
 
   // ### Pagination ###
   let limit = Number(req.query?.limit);
@@ -21,17 +31,27 @@ export default (req, res, next) => {
   let skip = Number(req.query?.skip);
   skip = skip > 0 ? skip : page * limit;
 
-  /* Modern Query Methods */
-  res.getModelList = async (Model, customFilter = {}, populate = null) => {
+  // ### Modern Query Methods ###
+  res.getModelList = async (
+    Model,
+    customFilter = {},
+    populate = null,
+    select = null
+  ) => {
     return await Model.find({ ...filter, ...search, ...customFilter })
       .sort(sort)
       .skip(skip)
       .limit(limit)
-      .populate(populate);
+      .populate(populate)
+      .select(select);
   };
 
   res.getModelListDetails = async (Model, customFilter = {}) => {
-    const data = await Model.find({ ...filter, ...search, ...customFilter });
+    const totalRecords = await Model.countDocuments({
+      ...filter,
+      ...search,
+      ...customFilter,
+    });
 
     const details = {
       filter,
@@ -44,14 +64,13 @@ export default (req, res, next) => {
         previous: page > 0 ? page : false,
         current: page + 1,
         next: page + 2,
-        total: Math.ceil(data.length / limit),
+        total: Math.ceil(totalRecords / limit),
       },
-      totalRecords: data.length,
+      totalRecords,
     };
 
-    details.pages.next =
-      details.pages.next > details.pages.total ? false : details.pages.next;
-    if (details.totalRecords <= limit) details.pages = false;
+    if (details.pages.next > details.pages.total) details.pages.next = false;
+    if (totalRecords <= limit) details.pages = false;
 
     return details;
   };
