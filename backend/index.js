@@ -3,6 +3,7 @@ import "dotenv/config";
 import dbConnection from "./src/config/dbConnection.js";
 import queryHandler from "./src/middleware/queryHandler.js";
 import router from "./src/routes/user.js";
+import errorHandler from "./src/middleware/errrorHandler.js";
 
 const app = express();
 const PORT = process.env?.PORT || 8000;
@@ -24,7 +25,7 @@ app.use(queryHandler);
 app.use("/", router);
 
 // Error Handler:
-
+app.use(errorHandler);
 // run Server
 app.listen(PORT, () =>
   console.log(`Server running on http://127.0.0.1:${PORT}`)
