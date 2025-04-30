@@ -11,9 +11,8 @@ const UserSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      trim: true,
       required: true,
-      set: (password) => passwordEncrypt(password),
+      trim: true,
     },
     email: {
       type: String,
@@ -30,12 +29,25 @@ const UserSchema = new mongoose.Schema(
       default: true,
     },
     isAdmin: {
-      type: true,
+      type: Boolean,
       default: false,
     },
   },
   { collection: "users", timestamps: true }
 );
+
+UserSchema.pre("save", async function (next) {
+  if (this.isModified("password")) {
+    try {
+      this.password = await passwordEncrypt(this.password);
+      next();
+    } catch (err) {
+      next(err);
+    }
+  } else {
+    next();
+  }
+});
 
 const User = mongoose.model("User", UserSchema);
 export default User;
