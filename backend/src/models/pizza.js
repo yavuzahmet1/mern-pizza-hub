@@ -18,7 +18,8 @@ const PizzaSchema = new mongoose.Schema(
       },
     ],
   },
-  { collection: "pizzas", timestamps }
+  { collection: "pizzas", timestamps: true }
 );
 
-export default mongoose.model("Pizza", PizzaSchema);
+const Pizza = mongoose.model("Pizza", PizzaSchema);
+export default Pizza;
