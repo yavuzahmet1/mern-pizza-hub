@@ -97,8 +97,8 @@ const userController = {
       res.status(500).send({
         error: true,
         message: "Server error during user deletion",
-        // systemMessage:
-        //   process.env.NODE_ENV === "development" ? err.message : undefined,
+        systemMessage:
+          process.env.NODE_ENV === "development" ? err.message : undefined,
       });
     }
   },
