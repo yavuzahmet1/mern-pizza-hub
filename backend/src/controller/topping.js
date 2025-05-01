@@ -3,7 +3,7 @@ import asyncHandler from "../middlewares/asyncHandler.js";
 
 const toppingController = {
   list: asyncHandler(async (req, res) => {
-    const result = await res.getModelList(Topping, "toppingIds");
+    const result = await res.getModelList(Topping);
     const details = await res.getModelListDetails(Topping);
     res.status(200).send({ error: false, result, details });
   }),
