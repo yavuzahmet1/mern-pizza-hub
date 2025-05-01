@@ -22,12 +22,12 @@ const orderController = {
   }),
 
   update: asyncHandler(async (req, res) => {
-    const updated = await Order.findByIdAndUpdate(req.params.id, req.body, {
+    const result = await Order.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
     });
 
-    if (!updated) {
+    if (!result) {
       return res.status(404).send({ error: true, message: "Order not found" });
     }
 
