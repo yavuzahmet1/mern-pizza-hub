@@ -23,13 +23,15 @@ const pizzaController = {
   }),
 
   update: asyncHandler(async (req, res) => {
-    const updated = await Pizza.findByIdAndUpdate(req.params.id, req.body, {
+    const result = await Pizza.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
     });
 
-    if (!updated) {
-      return res.status(404).send({ error: true, message: "Pizza not found" });
+    if (!result) {
+      return res
+        .status(404)
+        .send({ error: true, message: "Pizza not found or already deleted" });
     }
 
     const populated = await result.populate([
