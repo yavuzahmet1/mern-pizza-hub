@@ -47,7 +47,6 @@ const orderController = {
         message: "Order not found or already deleted",
       });
     }
-    res.status(204).send();
     res
       .status(200)
       .send({ error: false, message: "Order deleted successfully" });
