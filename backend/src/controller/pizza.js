@@ -3,7 +3,7 @@ import asyncHandler from "../middlewares/asyncHandler.js";
 
 const pizzaController = {
   list: asyncHandler(async (req, res) => {
-    const result = await res.getModelList(Pizza, "toppingIds");
+    const result = await res.getModelList(Pizza);
     const details = await res.getModelListDetails(Pizza);
     res.status(200).send({ error: false, result, details });
   }),
