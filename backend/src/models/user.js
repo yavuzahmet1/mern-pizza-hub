@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { passwordEncrypt } from "../helper/passwordEncrypt.js";
+import { hashPassword } from "../helper/passwordEncrypt.js";
 
 const UserSchema = new mongoose.Schema(
   {
@@ -39,7 +39,7 @@ const UserSchema = new mongoose.Schema(
 UserSchema.pre("save", async function (next) {
   if (this.isModified("password")) {
     try {
-      this.password = await passwordEncrypt(this.password);
+      this.password = await hashPassword(this.password);
       next();
     } catch (err) {
       next(err);
