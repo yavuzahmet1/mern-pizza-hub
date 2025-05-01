@@ -1,14 +1,14 @@
 import express from "express";
 
-const router = express.Router();
+const orderRouter = express.Router();
 
 import orderController from "../controller/order.js";
 
-router.get("/", orderController.list);
-router.post("/", orderController.create);
-router.get("/:id", orderController.read);
-router.put("/:id", orderController.update);
-router.patch("/:id", orderController.update);
-router.delete("/:id", orderController.delete);
+orderRouter.get("/", orderController.list);
+orderRouter.post("/", orderController.create);
+orderRouter.get("/:id", orderController.read);
+orderRouter.put("/:id", orderController.update);
+orderRouter.patch("/:id", orderController.update);
+orderRouter.delete("/:id", orderController.delete);
 
-export default router;
+export default orderRouter;
