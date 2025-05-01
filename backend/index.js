@@ -8,6 +8,8 @@ import errorHandler from "./src/middlewares/errorHandler.js";
 const app = express();
 const PORT = process.env?.PORT || 8000;
 
+app.set("query parser", "extended");
+
 // Accept JSON:
 app.use(express.json());
 
