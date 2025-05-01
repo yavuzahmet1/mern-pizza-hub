@@ -1,4 +1,5 @@
 import Order from "../models/order.js";
+import Pizza from "../models/pizza.js";
 import asyncHandler from "../middlewares/asyncHandler.js";
 
 const orderController = {
@@ -9,10 +10,14 @@ const orderController = {
   }),
 
   create: asyncHandler(async (req, res) => {
+    const pizza = await Pizza.findById(req.body.pizzaId);
+    if (!pizza) {
+      return res.status(404).send({ error: true, message: "Pizza not found" });
+    }
+
     const result = await Order.create(req.body);
     res.status(201).send({ error: false, result });
   }),
-
   read: asyncHandler(async (req, res) => {
     const result = await Order.findById(req.params.id);
     if (!result) {
