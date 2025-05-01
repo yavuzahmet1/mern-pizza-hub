@@ -29,7 +29,6 @@ const OrderSchema = new mongoose.Schema(
     },
     totalPrice: {
       type: Number,
-      required: true,
     },
   },
   { collection: "orders", timestamps: true }
