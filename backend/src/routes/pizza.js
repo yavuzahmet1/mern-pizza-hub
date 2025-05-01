@@ -2,7 +2,7 @@ import express from "express";
 
 const pizzaRouter = express.Router();
 
-import pizzaController from "../controller/order.js";
+import pizzaController from "../controller/pizza.js";
 
 pizzaRouter.get("/", pizzaController.list);
 pizzaRouter.post("/", pizzaController.create);
