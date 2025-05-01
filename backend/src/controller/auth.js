@@ -1,15 +1,18 @@
 import CustomError from "../helper/customError.js";
 import User from "../models/user.js";
+import asyncHandler from "../middlewares/asyncHandler.js";
 import Token from "../models/token.js";
-import { passwordEncrypt } from "../helper/passwordEncrypt.js";
+import { hashPassword } from "../helper/passwordEncrypt.js";
+import jwt from "jsonwebtoken";
 
 const authController = {
-  login: async (req, res, next) => {
+  login: asyncHandler(async (req, res) => {
     const { username, email, password } = req.body;
 
     if (!((username || email) && password)) {
-      throw new CustomError("Username/email and password are required", 401);
+      throw new CustomError("e-mail/username and password are required", 401);
     }
+
     const user = await User.findOne({
       $or: [{ email }, { username }],
     });
@@ -17,34 +20,67 @@ const authController = {
     if (!user)
       throw new CustomError("Incorrect email/username or password", 401);
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid)
+    const hashedPassword = hashPassword(password);
+
+    if (hashedPassword !== user.password) {
       throw new CustomError("Incorrect email/username or password", 401);
+    }
 
     if (!user.isActive) throw new CustomError("This account is not active");
+
+    const accessToken = jwt.sign(
+      { userId: user._id, username: user.username, email: user.email },
+      process.env.ACCESS_KEY,
+      { expiresIn: "15m" }
+    );
+
+    const refreshToken = jwt.sign(
+      { userId: user._id },
+      process.env.REFRESH_KEY,
+      { expiresIn: "7d" }
+    );
 
     let tokenData = await Token.findOne({ userId: user._id });
 
     if (!tokenData) {
       tokenData = await Token.create({
         userId: user._id,
-        token: passwordEncrypt(Date.now() + user._id),
+        token: refreshToken,
       });
+    } else {
+      tokenData.token = refreshToken;
+      await tokenData.save();
     }
 
-    res.status(200).send({
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true, //js okumasını engelliyormuş
+      secure: process.env.NODE_ENV === "production", //https de çalışıyormuş
+      sameSite: "Strict", // CSRF Cross-Site Request Forgery aynı site
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 day
+    });
+
+    const userResponse = user.toObject();
+    delete userResponse.password;
+    delete userResponse.__v;
+
+    res.status(200).json({
       error: false,
-      token: tokenData.token,
-      user: user,
+      bearer: {
+        access: accessToken,
+        refresh: refreshToken,
+      },
+      userResponse,
       message: "ok",
     });
-  },
+  }),
+
   logout: async (req, res) => {
     res.status(200).send({
       error: false,
       message: "ok",
     });
   },
+
   refresh: async (req, res) => {
     res.status(200).send({
       error: false,
