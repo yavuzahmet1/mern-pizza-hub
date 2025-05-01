@@ -21,15 +21,14 @@ const OrderSchema = new mongoose.Schema(
     quantity: {
       type: Number,
       default: 1,
-      min:1
+      min: 1,
     },
     price: {
       type: Number,
       required: true,
     },
     totalPrice: {
-        type: Number,
-      },
+      type: Number,
     },
   },
   { collection: "Order", timestamps: true }
