@@ -31,7 +31,7 @@ const OrderSchema = new mongoose.Schema(
       type: Number,
     },
   },
-  { collection: "Order", timestamps: true }
+  { collection: "orders", timestamps: true }
 );
 
 OrderSchema.pre("save", function (next) {
