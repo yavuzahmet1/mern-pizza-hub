@@ -3,9 +3,11 @@ import userRouter from "./user.js";
 import pizzaRouter from "./pizza.js";
 import orderRouter from "./order.js";
 import toppingRouter from "./topping.js";
+import authRouter from "./auth.js";
 
 const router = express.Router();
 
+router.use("/auth", authRouter);
 router.use("/users", userRouter);
 router.use("/orders", orderRouter);
 router.use("/pizzas", pizzaRouter);
