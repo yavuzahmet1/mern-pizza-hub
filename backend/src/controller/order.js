@@ -31,7 +31,10 @@ const orderController = {
       return res.status(404).send({ error: true, message: "Order not found" });
     }
 
-    const populated = await result.populate(["userId", "pizzaId"]);
+    const populated = await result.populate([
+      { path: "userId", select: "name email" },
+      { path: "pizzaId", select: "name price" },
+    ]);
 
     res.status(200).send({ error: false, result: populated });
   }),
