@@ -4,6 +4,7 @@ import dbConnection from "./src/config/dbConnection.js";
 import queryHandler from "./src/middlewares/queryHandler.js";
 import router from "./src/routes/index.js";
 import errorHandler from "./src/middlewares/errorHandler.js";
+import authentication from "./src/middlewares/authentication.js";
 
 const app = express();
 const PORT = process.env?.PORT || 8000;
@@ -25,6 +26,9 @@ app.use(queryHandler);
 
 // Routes:
 app.use("/api", router);
+
+// Authentication
+app.use(authentication);
 
 // Error Handler:
 app.use(errorHandler);
