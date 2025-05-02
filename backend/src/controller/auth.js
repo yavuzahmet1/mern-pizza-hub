@@ -98,12 +98,49 @@ const authController = {
     });
   }),
 
-  refresh: async (req, res) => {
-    res.status(200).send({
-      error: false,
-      message: "ok",
-    });
-  },
+  refresh: asyncHandler(async (req, res) => {
+    const refreshToken = req.cookies?.refreshToken || req.body.refreshToken;
+
+    // 2. Refresh token yoksa hata döndür
+    if (!refreshToken) {
+      throw new CustomError("Refresh token is required", 400);
+    }
+
+    try {
+      // 3. Refresh token'ı doğrula
+      const decoded = jwt.verify(refreshToken, process.env.REFRESH_KEY);
+
+      // 4. Token geçerli ise yeni bir access token oluştur
+      const accessToken = jwt.sign(
+        {
+          userId: decoded.userId,
+          username: decoded.username,
+          email: decoded.email,
+        },
+        process.env.ACCESS_KEY,
+        { expiresIn: "15m" }
+      );
+
+      // 5. Refresh token'ın geçerliliğini veritabanında kontrol et
+      const tokenData = await Token.findOne({ token: refreshToken });
+
+      if (!tokenData) {
+        throw new CustomError("Invalid refresh token", 401);
+      }
+
+      // 6. Yeni access token ile başarılı yanıt
+      res.status(200).json({
+        error: false,
+        bearer: {
+          access: accessToken,
+        },
+        message: "Token refreshed successfully",
+      });
+    } catch (err) {
+      // 7. Refresh token geçersiz veya süresi dolmuşsa hata döndür
+      throw new CustomError("Invalid or expired refresh token", 401);
+    }
+  }),
 };
 
 export default authController;
