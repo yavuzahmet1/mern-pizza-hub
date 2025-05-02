@@ -30,6 +30,9 @@ app.use("/api", router);
 // Authentication
 app.use(authentication);
 
+//static route
+app.use("/images", express.static("./uploads"));
+
 // Error Handler:
 app.use(errorHandler);
 // run Server
