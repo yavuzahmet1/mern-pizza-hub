@@ -4,6 +4,7 @@ import asyncHandler from "../middlewares/asyncHandler.js";
 import Token from "../models/token.js";
 import { hashPassword } from "../helper/passwordEncrypt.js";
 import jwt from "jsonwebtoken";
+import sendMail from "../helper/sendMail.js";
 
 const authController = {
   login: asyncHandler(async (req, res) => {
@@ -72,8 +73,16 @@ const authController = {
       userResponse,
       message: "ok",
     });
-  }),
 
+    sendMail({
+      to: user.email,
+      subject: "Welcome Back 👋",
+      html: `<h1>Hello, ${user.username}</h1>
+             <p>We're happy to see you again. You’ve successfully logged in to your account.</p>`,
+    }).catch((err) => {
+      console.error("Login mail could not be sent:", err.message);
+    });
+  }),
   logout: asyncHandler(async (req, res) => {
     const refreshToken = req.cookies?.refreshToken;
 
