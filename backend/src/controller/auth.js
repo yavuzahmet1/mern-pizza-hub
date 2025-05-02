@@ -55,14 +55,13 @@ const authController = {
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true, //js okumasını engelliyormuş
-      secure: process.env.NODE_ENV === "production", //https de çalışıyormuş
+      secure: process.env.NODE_ENV === "development", //https de çalışıyormuş
       sameSite: "Strict", // CSRF Cross-Site Request Forgery aynı site
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 day
     });
 
     const userResponse = user.toObject();
     delete userResponse.password;
-    delete userResponse.__v;
 
     res.status(200).json({
       error: false,
