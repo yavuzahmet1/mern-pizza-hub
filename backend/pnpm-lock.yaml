@@ -32,6 +32,9 @@ importers:
       morgan:
         specifier: ^1.10.0
         version: 1.10.0
+      nodemailer:
+        specifier: ^6.10.1
+        version: 6.10.1
       zod:
         specifier: ^3.24.3
         version: 3.24.3
@@ -524,6 +527,10 @@ packages:
     peerDependenciesMeta:
       encoding:
         optional: true
+
+  nodemailer@6.10.1:
+    resolution: {integrity: sha512-Z+iLaBGVaSjbIzQ4pX6XV41HrooLsQ10ZWPUehGmuantvzWoDVBnmsdUcOIDM1t+yPor5pDhVlDESgOMEGxhHA==}
+    engines: {node: '>=6.0.0'}
 
   nodemon@3.1.10:
     resolution: {integrity: sha512-WDjw3pJ0/0jMFmyNDp3gvY2YizjLmmOUQo6DEBY+JgdvW/yQ9mEeSw6H5ythl5Ny2ytb7f9C2nIbjSxMNzbJXw==}
@@ -1278,6 +1285,8 @@ snapshots:
   node-fetch@2.7.0:
     dependencies:
       whatwg-url: 5.0.0
+
+  nodemailer@6.10.1: {}
 
   nodemon@3.1.10:
     dependencies:
