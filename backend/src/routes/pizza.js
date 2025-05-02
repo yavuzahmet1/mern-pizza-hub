@@ -1,14 +1,19 @@
 import express from "express";
+import upload from "../middlewares/upload.js";
+import pizzaController from "../controller/pizza.js";
 
 const pizzaRouter = express.Router();
 
-import pizzaController from "../controller/pizza.js";
-
 pizzaRouter.get("/", pizzaController.list);
-pizzaRouter.post("/", pizzaController.create);
+pizzaRouter.post("/", upload.single("image"), pizzaController.create);
+pizzaRouter.post(
+  "/bulk",
+  upload.array("images", 5),
+  pizzaController.bulkCreate
+);
 pizzaRouter.get("/:id", pizzaController.read);
-pizzaRouter.put("/:id", pizzaController.update);
-pizzaRouter.patch("/:id", pizzaController.update);
+pizzaRouter.put("/:id", upload.single("image"), pizzaController.update);
+pizzaRouter.patch("/:id", upload.single("image"), pizzaController.update);
 pizzaRouter.delete("/:id", pizzaController.delete);
 
 export default pizzaRouter;
