@@ -20,3 +20,17 @@ A full-stack pizza delivery platform built with the MERN stack (MongoDB, Express
 
 - **JWT (JSON Web Token)** for authentication:  
   JWT will be implemented for secure user authentication, enabling users to sign up, log in, and maintain sessions across the platform.
+
+## Email System Flow
+
+```mermaid
+sequenceDiagram
+    participant Main
+    participant Helper
+    participant Dotenv
+
+    Main->>Dotenv: dotenv.config()
+    Main->>Helper: sendMail()
+    Helper->>process.env: EMAIL_SENDER_NAME
+    process.env-->>Helper: Returns the value
+```
