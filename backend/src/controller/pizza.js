@@ -10,6 +10,13 @@ const pizzaController = {
 
   create: asyncHandler(async (req, res) => {
     req.body.toppingIds = [...new Set(req.body.toppingIds)];
+
+    if (req.file) {
+      req.body.image = req.file.filename;
+    } else if (req.files?.length) {
+      req.body.images = req.files.map((file) => file.filename);
+    }
+
     const result = await Pizza.create(req.body);
     res.status(201).send({ error: false, result });
   }),
