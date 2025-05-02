@@ -74,12 +74,29 @@ const authController = {
     });
   }),
 
-  logout: async (req, res) => {
-    res.status(200).send({
-      error: false,
-      message: "ok",
+  logout: asyncHandler(async (req, res) => {
+    const refreshToken = req.cookies?.refreshToken;
+
+    if (!refreshToken) {
+      return res.status(200).json({
+        error: false,
+        message: "Logout success",
+      });
+    }
+
+    await Token.findOneAndDelete({ token: refreshToken });
+
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Strict",
     });
-  },
+
+    res.status(200).json({
+      error: false,
+      message: "Logout success",
+    });
+  }),
 
   refresh: async (req, res) => {
     res.status(200).send({
