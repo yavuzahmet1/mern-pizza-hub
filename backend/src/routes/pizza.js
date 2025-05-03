@@ -6,11 +6,11 @@ const pizzaRouter = express.Router();
 
 pizzaRouter.get("/", pizzaController.list);
 pizzaRouter.post("/", upload.single("image"), pizzaController.create);
-pizzaRouter.post(
-  "/bulk",
-  upload.array("images", 5),
-  pizzaController.bulkCreate
-);
+// pizzaRouter.post(
+//   "/bulk",
+//   upload.array("images", 5),
+//   pizzaController.bulkCreate
+// );
 pizzaRouter.get("/:id", pizzaController.read);
 pizzaRouter.put("/:id", upload.single("image"), pizzaController.update);
 pizzaRouter.patch("/:id", upload.single("image"), pizzaController.update);
