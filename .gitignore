@@ -98,3 +98,8 @@ typings/
 docker-compose.override.yml
 **/.dockerignore
 **/docker-compose*.yml
+
+# Log yönetim sistemi dosyaları
+logs/*.log
+logs/*.json
+!logs/config.json  # Eğer belirli bir config dosyasını tutmak istiyorsan, dışarıda bırak (opsiyonel)
