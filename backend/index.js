@@ -41,5 +41,5 @@ app.use(errorHandler);
 
 // Server startup
 app.listen(PORT, () => {
-  logger.info(`Server running on http://127.0.0.1:${PORT}`); // Logger kullanımı
+  logger.info(`Server running on http://127.0.0.1:${PORT}`);
 });
